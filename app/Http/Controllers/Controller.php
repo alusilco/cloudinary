@@ -5,8 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Cloudinary\Cloudinary;
 
-class Controller extends BaseController
+class ImageController extends Controller
 {
-    use AuthorizesRequests, ValidatesRequests;
+    public function upload(Request $request)
+    {
+        $image = $request->file('image');
+
+        $url = Cloudinary::upload($image->getRealPath());
+
+        return response()->json([
+            'url' => $url,
+        ]);
+    }
 }
